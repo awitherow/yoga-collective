@@ -1,0 +1,16 @@
+export const yogaStyles = [
+  "yin",
+  "hatha",
+  "ashtanga",
+  "vinyasa",
+  "raja",
+  "kundalini",
+  "iyengar",
+  "restorative",
+  "prenatal",
+  "postnatal",
+  "meditation",
+  "breathwork",
+  "tai chi",
+  "qi gong",
+];
