@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { Entypo, AntDesign } from "@expo/vector-icons";
 
-import { Welcome, ProfileType, ProfileInfo, Styles } from "./Steps";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Welcome, ProfileType, ProfileInfo, Styles, Bio } from "./Steps";
+
+import { StateContext } from "../../state";
 
 export default function Wizard({ navigation }) {
+  const [state, dispatch] = useContext(StateContext);
+
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
     firstName: "",
@@ -57,24 +60,40 @@ export default function Wizard({ navigation }) {
         return (
           <Styles
             profileType={isTeacherOrStudent}
-            completeSetup={() => {
+            nextStep={async (classStyles) => {
               switch (isTeacherOrStudent) {
                 case "student":
-                // TODO: add styles to profile via api
-                // navigation.navigate("Home")
+                  // TODO: add styles to profile via api
+                  await dispatch({ type: "SET_HAS_ACCOUNT" });
+                  navigation.navigate("Home");
                 case "teacher":
-                // TODO: add styles to profile via api
-                // setStep(4)
+                  // TODO: add styles to profile via api
+                  setStep(4);
               }
             }}
           />
         );
       case 4:
-      // TODO: Teachers Only, Bio, Links, Tagline,
-      case 5:
+        if (isTeacherOrStudent === "student") {
+          navigation.navigate("Home");
+        }
+        return (
+          <Bio
+            nextStep={async (bio) => {
+              await dispatch({ type: "SET_HAS_ACCOUNT" });
+              // TODO: add bio to profile via api
+              // TODO: later... setStep(5);
+              navigation.navigate("Home");
+            }}
+          />
+        );
+      // case 5:
       // TODO: Teachers Only, Submit Certification Information
     }
   };
+
+  const stepLengths =
+    isTeacherOrStudent === "teacher" ? [0, 1, 2, 3, 4, 5] : [0, 1, 2, 3];
 
   return (
     <View>
@@ -86,7 +105,7 @@ export default function Wizard({ navigation }) {
         >
           <AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
-        {[0, 1, 2, 3].map((i) => (
+        {stepLengths.map((i) => (
           <TouchableOpacity
             key={i}
             disabled={i > step}

@@ -1,4 +1,5 @@
 import React, { useReducer, createContext } from "react";
+import * as types from "./types";
 
 export const StateContext = createContext();
 const { Provider } = StateContext;
@@ -12,15 +13,15 @@ const initialState = {
 export const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state, action) => {
     switch (action.type) {
-      case "SET_HAS_ACCOUNT":
+      case types.SET_HAS_ACCOUNT:
         return {
           hasAccount: true,
         };
-      case "SET_IS_TEACHER":
+      case types.SET_IS_TEACHER:
         return {
           isTeacher: true,
         };
-      case "SET_IS_STUDENT":
+      case types.SET_IS_STUDENT:
         return {
           isStudent: true,
         };

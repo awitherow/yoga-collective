@@ -22,23 +22,26 @@ for yoga students to
 ## data structure
 
 - teacher
-- - photo
-- - name
+- - id
 - - phone (private)
 - - email (private)
-- - id
+- - photo
+- - name
 - - tagline
 - - styles
-- - certifications { name, provider }
 - - bio
+- - link
+    ( FUTURE )
 - - links { instagram, facebook, insight timer, website, other }
 - - verified
+- - certifications { name, provider }
 
 - student
 - - phone (private)
 - - email (private, visible to teacher)
 - - photo
-- - favorite_styles []
+- - fav_styles [strings]
+- - fav_teachers [id of teachers]
 
 - classes
 - - title

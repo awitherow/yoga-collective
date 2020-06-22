@@ -4,7 +4,7 @@ import { ScrollView } from "react-native-gesture-handler";
 
 import { yogaStyles } from "../../../helpers/strings";
 
-export default function Styles({ profileType }) {
+export default function Styles({ profileType, nextStep }) {
   const [favs, setFavs] = useState([]);
 
   return (
@@ -33,6 +33,13 @@ export default function Styles({ profileType }) {
             </Text>
           </TouchableOpacity>
         ))}
+        <TouchableOpacity onPress={() => nextStep(favs)}>
+          <Text>
+            {profileType === "student"
+              ? "Find Yoga Classes"
+              : "Complete Your Teacher Bio!"}
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );

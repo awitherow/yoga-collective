@@ -5,7 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Onboarding from "./views/Onboarding";
 import Home from "./views/Home";
 
-import { StateContext } from "./state/";
+import { StateContext } from "./state";
 
 const Stack = createStackNavigator();
 
