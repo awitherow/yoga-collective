@@ -23,7 +23,7 @@ export default function Bio({ nextStep }) {
             value={profile.tagline}
             maxLength={52}
             placeholder="An eye catching headline"
-            style={{ ...tooMuchTextStyle(profile.tagline, 52) }}
+            style={{ ...tooMuchTextStyle(profile.tagline, 40) }}
             onChangeText={(t) =>
               setProfile({
                 ...profile,
@@ -31,7 +31,7 @@ export default function Bio({ nextStep }) {
               })
             }
           />
-          <Text>{profile.tagline.length}/120</Text>
+          <Text>{profile.tagline.length}/40</Text>
         </View>
         <View>
           <TextInput

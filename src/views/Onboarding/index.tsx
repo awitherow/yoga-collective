@@ -25,18 +25,18 @@ export default function Wizard({ navigation }) {
     // TODO: check AsyncStorage for form/image, setStep and prefill if exists
   }, []);
 
-  const completeInitialSignup = () => {
-    // TODO: store form, image to AsyncStorage
-    // TODO: call API for registration
-    // - create user account
-    // - add to mailchimp mailing list
-    setStep(2);
-  };
-
   const getSlide = () => {
     switch (step) {
       case 0:
-        return <Welcome setStep={() => setStep(1)} />;
+        return (
+          <Welcome
+            navigation={navigation}
+            setStep={() => {
+              navigation.setOptions({ title: "Setup Your Profile" });
+              setStep(1);
+            }}
+          />
+        );
       case 1:
         return (
           <ProfileInfo
@@ -44,13 +44,26 @@ export default function Wizard({ navigation }) {
             setForm={setForm}
             image={image}
             setImage={setImage}
-            completeInitialSignup={completeInitialSignup}
+            completeInitialSignup={() => {
+              // TODO: store form, image to AsyncStorage
+              // TODO: call API for registration
+              // - create user account
+              // - add to mailchimp mailing list
+              navigation.setOptions({ title: "Pick Your Profile Type" });
+              setStep(2);
+            }}
           />
         );
       case 2:
         return (
           <ProfileType
             setIsTeacherOrStudent={(choice) => {
+              navigation.setOptions({
+                title:
+                  choice === "student"
+                    ? "Your Favorite Styles"
+                    : "Styles You Teach",
+              });
               setIsTeacherOrStudent(choice);
               setStep(3);
             }}
@@ -68,6 +81,7 @@ export default function Wizard({ navigation }) {
                   navigation.navigate("Home");
                 case "teacher":
                   // TODO: add styles to profile via api
+                  navigation.setOptions({ title: "Complete Your Bio" });
                   setStep(4);
               }
             }}

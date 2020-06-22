@@ -26,7 +26,8 @@ for yoga students to
 - - phone (private)
 - - email (private)
 - - photo
-- - name
+- - firstName
+- - lastName
 - - tagline
 - - styles
 - - bio
@@ -40,25 +41,21 @@ for yoga students to
 - - phone (private)
 - - email (private, visible to teacher)
 - - photo
+- - firstName
+- - lastName
 - - fav_styles [strings]
 - - fav_teachers [id of teachers]
 
 - classes
+- - teacherId
 - - title
 - - tagline
 - - description
 - - location (online link, geolocation)
+- - date
 - - time
 - - styles
 
 ## todo
 
-- https://medium.com/@grigorylapshin/oauth-in-react-native-with-expo-c383ee371f4a
-- https://docs.expo.io/versions/latest/sdk/in-app-purchases/
-
-## read these
-
-- https://expo.canny.io/feature-requests/p/ability-to-work-in-expo-client-after-detaching
-- https://docs.expo.io/introduction/why-not-expo/
-- https://docs.expo.io/introduction/managed-vs-bare/#managed-workflow
-- https://medium.com/@rafael.rpadovani/stripe-payments-with-sca-in-react-native-15a4926e14f
+- https://medium.com/@lukepighetti/yes-you-can-query-firebase-with-graphql-e79a45990f22

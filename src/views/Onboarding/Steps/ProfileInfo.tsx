@@ -41,42 +41,9 @@ export default function ProfileInfo({
     }
   };
 
-  // const formErrors = () => {
-  //   const { firstName, lastName, email, phone, password } = form;
-  //   const errors = {};
-
-  //   if (firstName.length < 2) {
-  //     errors.firstName = "First name must be greater than 2 characters";
-  //   }
-  //   if (!lastName.length < 2) {
-  //     errors.lastName = "Last name must be greater than 2 characters";
-  //   }
-
-  //   if (!image) {
-  //     errors.lastName = "Last name must be greater than 2 characters";
-  //   }
-
-  //   if (!validator.isEmail(email)) {
-  //     errors.email = "Please enter a valid email address";
-  //   }
-
-  //   if (!validator.isMobilePhone(phone)) {
-  //     errors.email = "Please enter a valid email address";
-  //   }
-
-  //   if (password.length < 16 || !validator.isAlphaNumeric(password)) {
-  //     errors.password =
-  //       "Please enter a secure password using a combination of ONLY letters, numbers longer than 16 characters";
-  //   }
-  //   return errors;
-  // };
-
-  // const errors = formErrors();
-
   return (
     <View>
       <View>
-        <Text>Set up your Profile</Text>
         <View>
           <TouchableOpacity onPress={pickImage}>
             <Text>Pick an image from camera roll</Text>
@@ -112,6 +79,7 @@ export default function ProfileInfo({
             }
           />
           <TextInput
+            autoCapitalize="none"
             placeholder="Email Address"
             keyboardType="email-address"
             value={form.email}

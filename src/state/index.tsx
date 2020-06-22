@@ -7,7 +7,7 @@ const { Provider } = StateContext;
 const initialState = {
   hasAccount: false,
   isTeacher: false,
-  isStudent: true,
+  isStudent: false,
 };
 
 export const StateProvider = ({ children }) => {
@@ -20,10 +20,12 @@ export const StateProvider = ({ children }) => {
       case types.SET_IS_TEACHER:
         return {
           isTeacher: true,
+          isStudent: false,
         };
       case types.SET_IS_STUDENT:
         return {
           isStudent: true,
+          isTeacher: true,
         };
       default:
         throw new Error();

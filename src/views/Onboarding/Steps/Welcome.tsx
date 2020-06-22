@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 
-export default function Welcome({ setStep }) {
+export default function Welcome({ setStep, navigation }) {
   return (
     <View>
       <Text>Welcome to the </Text>
@@ -12,6 +12,9 @@ export default function Welcome({ setStep }) {
       </Text>
       <TouchableOpacity onPress={setStep}>
         <Text>Get Started</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+        <Text>Already Have an Account?</Text>
       </TouchableOpacity>
     </View>
   );
