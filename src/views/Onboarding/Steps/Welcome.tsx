@@ -11,10 +11,7 @@ export default function Welcome({ setStep, navigation }) {
         worldwide. Find certified online classes, or nearby!
       </Text>
       <TouchableOpacity onPress={setStep}>
-        <Text>Get Started</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-        <Text>Already Have an Account?</Text>
+        <Text>Create My Profile</Text>
       </TouchableOpacity>
     </View>
   );

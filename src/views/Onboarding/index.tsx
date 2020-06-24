@@ -77,7 +77,7 @@ export default function Wizard({ navigation }) {
               switch (isTeacherOrStudent) {
                 case "student":
                   // TODO: add styles to profile via api
-                  await dispatch({ type: "SET_HAS_ACCOUNT" });
+                  await dispatch({ type: "SET_USER" });
                   navigation.navigate("Home");
                 case "teacher":
                   // TODO: add styles to profile via api
@@ -94,7 +94,7 @@ export default function Wizard({ navigation }) {
         return (
           <Bio
             nextStep={async (bio) => {
-              await dispatch({ type: "SET_HAS_ACCOUNT" });
+              await dispatch({ type: "SET_USER" });
               // TODO: add bio to profile via api
               // TODO: later... setStep(5);
               navigation.navigate("Home");

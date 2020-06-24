@@ -1,3 +1,3 @@
-export const SET_HAS_ACCOUNT = "SET_HAS_ACCOUNT";
-export const SET_IS_TEACHER = "SET_IS_TEACHER";
-export const SET_IS_STUDENT = "SET_IS_STUDENT";
+export const SET_USER = "SET_USER";
+export const SET_BIO_COMPLETE = "SET_BIO_COMPLETE";
+export const SET_LOADING = "SET_LOADING";

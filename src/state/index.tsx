@@ -5,27 +5,27 @@ export const StateContext = createContext();
 const { Provider } = StateContext;
 
 const initialState = {
-  hasAccount: false,
-  isTeacher: false,
-  isStudent: false,
+  user: null,
+  bioComplete: false,
+  loading: true,
 };
 
 export const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state, action) => {
-    switch (action.type) {
-      case types.SET_HAS_ACCOUNT:
+    const { type, payload } = action;
+
+    switch (type) {
+      case types.SET_USER:
         return {
-          hasAccount: true,
+          user: payload,
         };
-      case types.SET_IS_TEACHER:
+      case types.SET_BIO_COMPLETE:
         return {
-          isTeacher: true,
-          isStudent: false,
+          bioComplete: true,
         };
-      case types.SET_IS_STUDENT:
+      case types.SET_LOADING:
         return {
-          isStudent: true,
-          isTeacher: true,
+          loading: payload,
         };
       default:
         throw new Error();
