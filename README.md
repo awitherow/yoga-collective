@@ -32,10 +32,7 @@ for yoga students to
 - - styles
 - - bio
 - - link
-    ( FUTURE )
-- - links { instagram, facebook, insight timer, website, other }
 - - verified
-- - certifications { name, provider }
 
 - student
 - - phone (private)
@@ -43,13 +40,13 @@ for yoga students to
 - - photo
 - - firstName
 - - lastName
-- - fav_styles [strings]
-- - fav_teachers [id of teachers]
+- - styles [strings]
+- - favTeachers [id of teachers]
 
 - classes
+- - id
 - - teacherId
 - - title
-- - tagline
 - - description
 - - location (online link, geolocation)
 - - date
