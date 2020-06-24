@@ -1,4 +1,4 @@
-import firebase from "./";
+import firebase from "firebase";
 import { Alert, Linking } from "react-native";
 
 export const signUp = async ({ email, password }) => {
@@ -30,7 +30,7 @@ export const signUp = async ({ email, password }) => {
 
 export const signIn = async ({ email, password }) => {
   try {
-    await firebase.auth().signInWithEmailAndPassword(email, password);
+    return await firebase.auth().signInWithEmailAndPassword(email, password);
   } catch (error) {
     var errorCode = error.code;
     var errorMessage = error.message;
