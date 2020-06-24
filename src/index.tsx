@@ -59,43 +59,17 @@ function AuthorizedTabStack() {
 }
 
 function Main() {
-  const [{ user, bioComplete, loading }, dispatch] = useContext(StateContext);
+  const [{ user }, dispatch] = useContext(StateContext);
 
-  const setupApp = async () => {
-    // TODO: get user
-    // TODO: get bio
-    dispatch({ type: types.SET_LOADING, payload: false });
-  };
-
-  useEffect(() => {
-    setupApp();
-  }, []);
-
-  firebase.auth().onAuthStateChanged(async (authUser) => {
-    if (authUser && !user) {
-      dispatch({ type: types.SET_LOADING, payload: true });
+  firebase.auth().onAuthStateChanged((authUser) => {
+    if (authUser) {
       dispatch({ type: types.SET_USER, payload: user });
-      const profile = await getProfile(user.uid);
-
-      if (profile.setupComplete || !bioComplete) {
-        dispatch({ type: types.SET_BIO_COMPLETE });
-      }
-
-      dispatch({ type: types.SET_LOADING, payload: false });
     }
   });
 
-  if (loading) {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
-
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={bioComplete ? "Home" : "Onboarding"}>
+      <Stack.Navigator initialRouteName="Onboarding">
         {user ? (
           <>
             <Stack.Screen
