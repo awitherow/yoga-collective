@@ -13,9 +13,6 @@ export default function Wizard({ navigation }) {
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
-    email: "",
-    phone: "",
-    password: "",
   });
 
   const [image, setImage] = useState(null);

@@ -78,40 +78,6 @@ export default function ProfileInfo({
               })
             }
           />
-          <TextInput
-            autoCapitalize="none"
-            placeholder="Email Address"
-            keyboardType="email-address"
-            value={form.email}
-            onChangeText={(t) =>
-              setForm({
-                ...form,
-                email: t,
-              })
-            }
-          />
-          <TextInput
-            placeholder="Phone Number"
-            keyboardType="phone-pad"
-            value={form.phone}
-            onChangeText={(t) =>
-              setForm({
-                ...form,
-                phone: t,
-              })
-            }
-          />
-          <TextInput
-            placeholder="Password"
-            keyboardType="visible-password"
-            value={form.password}
-            onChangeText={(t) =>
-              setForm({
-                ...form,
-                password: t,
-              })
-            }
-          />
 
           <TouchableOpacity
             // disabled={errors.length}
