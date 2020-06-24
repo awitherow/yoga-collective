@@ -1,37 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, TextInput, TouchableOpacity, Text } from "react-native";
 
-import { signUp, signIn } from "../firebase/analytics";
+import { signUp, signIn } from "../firebase/auth";
 
 const defaultState = {
   email: "",
   password: "",
 };
 
-export default function AccessAccountForm({ route }) {
+export default function AccessAccountForm({ route, navigation }) {
   const [data, setData] = useState(defaultState);
   const [submitting, setIsSubmitting] = useState(false);
   const [formType, setFormType] = useState(
     JSON.stringify(route?.params?.type) || "signin"
   );
 
+  useEffect(() => {
+    navigation.setOptions({
+      title: formType === "signin" ? "Sign In" : "Sign Up",
+    });
+  }, [formType]);
+
   const handleSignIn = () => {
     setIsSubmitting(true);
-    signIn(data);
+    signIn(data).then((res) => {
+      setIsSubmitting(false);
+    });
   };
 
   const handleSignUp = () => {
     setIsSubmitting(true);
-    signUp(data);
+    signUp(data).then((res) => {
+      setIsSubmitting(false);
+    });
   };
 
   return (
     <View>
       <TextInput
+        autoCapitalize="none"
         placeholder="Your Email"
         keyboardType="email-address"
         textContentType="emailAddress"
-        onChangeText={() =>
+        onChangeText={(t) =>
           setData({
             ...data,
             email: t,
@@ -42,7 +53,7 @@ export default function AccessAccountForm({ route }) {
         placeholder="A secure password"
         keyboardType="visible-password"
         textContentType="password"
-        onChangeText={() =>
+        onChangeText={(t) =>
           setData({
             ...data,
             password: t,
@@ -66,8 +77,8 @@ export default function AccessAccountForm({ route }) {
         >
           <Text>
             {formType === "signin"
-              ? "Create an account"
-              : "Got an account already?"}
+              ? "Need an Account? Create One"
+              : "Already Got an Account?"}
           </Text>
         </TouchableOpacity>
       </View>

@@ -72,14 +72,15 @@ function Main() {
   }, []);
 
   firebase.auth().onAuthStateChanged(async (authUser) => {
-    if (authUser || !user) {
+    if (authUser && !user) {
       dispatch({ type: types.SET_LOADING, payload: true });
       dispatch({ type: types.SET_USER, payload: user });
       const profile = await getProfile(user.uid);
 
-      if (profile.setupComplete || !bioCopmlete) {
+      if (profile.setupComplete || !bioComplete) {
         dispatch({ type: types.SET_BIO_COMPLETE });
       }
+
       dispatch({ type: types.SET_LOADING, payload: false });
     }
   });
