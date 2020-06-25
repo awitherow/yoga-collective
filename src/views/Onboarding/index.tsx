@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { Entypo, AntDesign } from "@expo/vector-icons";
+import { connect } from "react-redux";
 
 import { Welcome, ProfileType, ProfileInfo, Styles, Bio } from "./Steps";
+import { updateProfile } from "../../firebase/profile";
 
-export default function Wizard({ navigation, params }) {
-  console.log(params);
+function Wizard({ navigation, user }) {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
   });
 
-  const [image, setImage] = useState(null);
+  const [photo, setPhoto] = useState(null);
   const [isTeacherOrStudent, setIsTeacherOrStudent] = useState(null);
 
   const getSlide = () => {
@@ -32,8 +33,8 @@ export default function Wizard({ navigation, params }) {
           <ProfileInfo
             form={form}
             setForm={setForm}
-            image={image}
-            setImage={setImage}
+            image={photo}
+            setImage={setPhoto}
             completeInitialSignup={() => {
               navigation.setOptions({ title: "Pick Your Profile Type" });
               setStep(2);
@@ -59,13 +60,12 @@ export default function Wizard({ navigation, params }) {
         return (
           <Styles
             profileType={isTeacherOrStudent}
-            nextStep={async (classStyles) => {
+            nextStep={(styles) => {
               switch (isTeacherOrStudent) {
                 case "student":
-                  // TODO: add styles to profile via api
+                  updateProfile(uid, { ...form, styles, photo });
                   navigation.navigate("Home");
                 case "teacher":
-                  // TODO: add styles to profile via api
                   navigation.setOptions({ title: "Complete Your Bio" });
                   setStep(4);
               }
@@ -79,9 +79,9 @@ export default function Wizard({ navigation, params }) {
         return (
           <Bio
             nextStep={async (bio) => {
-              // TODO: add bio to profile via api
-              // TODO: later... setStep(5);
+              updateProfile(uid, { ...form, ...bio, styles, photo });
               navigation.navigate("Home");
+              // TODO: later... setStep(5); instead
             }}
           />
         );
@@ -101,7 +101,11 @@ export default function Wizard({ navigation, params }) {
           disabled={step === 0}
           onPress={() => setStep(step - 1)}
         >
-          <AntDesign name="left" size={24} color="black" />
+          <AntDesign
+            name="left"
+            size={24}
+            color={step === 0 ? "gray" : "black"}
+          />
         </TouchableOpacity>
         {stepLengths.map((i) => (
           <TouchableOpacity
@@ -124,3 +128,10 @@ export default function Wizard({ navigation, params }) {
     </View>
   );
 }
+
+function mapStateToProps(state) {
+  return {
+    user: state.user,
+  };
+}
+export default connect(mapStateToProps)(Wizard);

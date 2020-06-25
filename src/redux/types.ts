@@ -1,0 +1,2 @@
+export const SET_RETRIEVED_USER = "SET_RETRIEVED_USER";
+export const SET_NEW_USER = "SET_NEW_USER";

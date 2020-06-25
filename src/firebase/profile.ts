@@ -8,3 +8,8 @@ export const getProfile = async (uid) => {
     return null;
   }
 };
+
+export const updateProfile = async (uid, data) => {
+  const firestore = firebase.firestore();
+  firestore.collection("users").doc(uid).set(data, { merge: true });
+};

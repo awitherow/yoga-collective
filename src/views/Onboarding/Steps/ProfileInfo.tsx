@@ -28,10 +28,11 @@ export default function ProfileInfo({
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
+      aspect: [1, 1],
+      quality: 0.8,
+      base64: true,
     });
 
     console.log(result);
@@ -39,6 +40,8 @@ export default function ProfileInfo({
     if (!result.cancelled) {
       setImage(result.uri);
     }
+
+    // https://docs.expo.io/versions/latest/sdk/imagemanipulator/
   };
 
   return (

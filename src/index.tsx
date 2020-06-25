@@ -5,6 +5,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "react-native-vector-icons";
 import firebase from "firebase";
+import { connect } from "react-redux";
+
+import * as types from "./redux/types";
 
 import Onboarding from "./views/Onboarding";
 import Classes from "./views/Classes";
@@ -56,25 +59,15 @@ function AuthorizedTabStack() {
 }
 
 class Main extends Component {
-  state = {
-    isLoading: true,
-    isSignedIn: false,
-    user: null,
-  };
-
   componentDidMount() {
     this.removeAuthListener = firebase.auth().onAuthStateChanged((authUser) => {
       if (authUser) {
-        this.setState({
-          isLoading: false,
-          isSignedIn: true,
-          user: authUser,
+        this.props.setRetrievedUser({
+          email: authUser.email,
+          uid: authUser.uid,
         });
       } else {
-        this.setState({
-          isLoading: false,
-          isSignedIn: false,
-        });
+        this.props.setNewUser();
       }
     });
   }
@@ -84,7 +77,7 @@ class Main extends Component {
   }
 
   render() {
-    const { isLoading, isSignedIn, user } = this.state;
+    const { isLoading, isSignedIn, setupComplete } = this.props;
 
     if (isLoading) {
       return (
@@ -95,7 +88,9 @@ class Main extends Component {
     } else {
       return (
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Onboarding">
+          <Stack.Navigator
+            initialRouteName={setupComplete ? "Home" : "Onboarding"}
+          >
             {isSignedIn ? (
               <>
                 <Stack.Screen
@@ -104,13 +99,11 @@ class Main extends Component {
                   options={{
                     title: "Getting Started",
                   }}
-                  initialParams={{ uid: user?.uid }}
                 />
                 <Stack.Screen
                   name="Home"
                   component={AuthorizedTabStack}
                   options={{ title: "Find Classes" }}
-                  initialParams={{ uid: user?.uid }}
                 />
               </>
             ) : (
@@ -128,4 +121,20 @@ class Main extends Component {
   }
 }
 
-export default Main;
+function mapStateToProps(state) {
+  return {
+    isLoading: state.isLoading,
+    isSignedIn: state.isSignedIn,
+    setupComplete: state.user?.setupComplete || false,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setRetrievedUser: (user) =>
+      dispatch({ type: types.SET_RETRIEVED_USER, payload: { user } }),
+    setNewUser: () => dispatch({ type: types.SET_RETRIEVED_USER }),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
