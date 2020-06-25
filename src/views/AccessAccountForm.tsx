@@ -23,16 +23,12 @@ export default function AccessAccountForm({ route, navigation }) {
 
   const handleSignIn = () => {
     setIsSubmitting(true);
-    signIn(data).then((res) => {
-      setIsSubmitting(false);
-    });
+    signIn(data);
   };
 
   const handleSignUp = () => {
     setIsSubmitting(true);
-    signUp(data).then((res) => {
-      setIsSubmitting(false);
-    });
+    signUp(data);
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { Component } from "react";
 import { Platform, View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -9,9 +9,6 @@ import firebase from "firebase";
 import Onboarding from "./views/Onboarding";
 import Classes from "./views/Classes";
 import AccessAccountForm from "./views/AccessAccountForm";
-
-import { StateContext } from "./state";
-import * as types from "./state/types";
 
 import { getProfile } from "./firebase/profile";
 import firebaseConfig from "./firebase/config";
@@ -58,44 +55,77 @@ function AuthorizedTabStack() {
   );
 }
 
-function Main() {
-  const [{ user }, dispatch] = useContext(StateContext);
+class Main extends Component {
+  state = {
+    isLoading: true,
+    isSignedIn: false,
+    user: null,
+  };
 
-  firebase.auth().onAuthStateChanged((authUser) => {
-    if (authUser) {
-      dispatch({ type: types.SET_USER, payload: user });
+  componentDidMount() {
+    this.removeAuthListener = firebase.auth().onAuthStateChanged((authUser) => {
+      if (authUser) {
+        this.setState({
+          isLoading: false,
+          isSignedIn: true,
+          user: authUser,
+        });
+      } else {
+        this.setState({
+          isLoading: false,
+          isSignedIn: false,
+        });
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this.removeAuthListener();
+  }
+
+  render() {
+    const { isLoading, isSignedIn, user } = this.state;
+
+    if (isLoading) {
+      return (
+        <View>
+          <Text>Loading...</Text>
+        </View>
+      );
+    } else {
+      return (
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Onboarding">
+            {isSignedIn ? (
+              <>
+                <Stack.Screen
+                  name="Onboarding"
+                  component={Onboarding}
+                  options={{
+                    title: "Getting Started",
+                  }}
+                  initialParams={{ uid: user?.uid }}
+                />
+                <Stack.Screen
+                  name="Home"
+                  component={AuthorizedTabStack}
+                  options={{ title: "Find Classes" }}
+                  initialParams={{ uid: user?.uid }}
+                />
+              </>
+            ) : (
+              <>
+                <Stack.Screen
+                  name="AccessAccountForm"
+                  component={AccessAccountForm}
+                />
+              </>
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      );
     }
-  });
-
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Onboarding">
-        {user ? (
-          <>
-            <Stack.Screen
-              name="Onboarding"
-              component={Onboarding}
-              options={{
-                title: "Getting Started",
-              }}
-            />
-            <Stack.Screen
-              name="Home"
-              component={AuthorizedTabStack}
-              options={{ title: "Find Classes" }}
-            />
-          </>
-        ) : (
-          <>
-            <Stack.Screen
-              name="AccessAccountForm"
-              component={AccessAccountForm}
-            />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  }
 }
 
 export default Main;
