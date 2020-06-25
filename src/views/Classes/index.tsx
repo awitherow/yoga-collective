@@ -1,10 +1,9 @@
 import React, { useContext, useState } from "react";
 import { ScrollView, TouchableOpacity } from "react-native";
 import Class from "./Class";
-import { StateContext } from "../../state";
 
-export default function ClassesScreen() {
-  const [{ isTeacher, isStudent }] = useContext(StateContext);
+export default function ClassesScreen({ params }) {
+  console.log(params);
   const [createClassModalShown, setCreateClassModalShown] = useState(false);
 
   // TODO: get classes/teacher info from graphql
@@ -42,18 +41,16 @@ export default function ClassesScreen() {
           )}
         />
       ))}
-      {isTeacher && (
-        <>
-          <TouchableOpacity onPress={() => setCreateClassModalShown(true)}>
-            +
-          </TouchableOpacity>
+      <>
+        <TouchableOpacity onPress={() => setCreateClassModalShown(true)}>
+          +
+        </TouchableOpacity>
 
-          <CreateClassModal
-            visible={createClassModalShown}
-            close={() => setCreateClassModalShown(false)}
-          />
-        </>
-      )}
+        <CreateClassModal
+          visible={createClassModalShown}
+          close={() => setCreateClassModalShown(false)}
+        />
+      </>
     </ScrollView>
   );
 }

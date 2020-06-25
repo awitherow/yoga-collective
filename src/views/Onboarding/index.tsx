@@ -4,11 +4,8 @@ import { Entypo, AntDesign } from "@expo/vector-icons";
 
 import { Welcome, ProfileType, ProfileInfo, Styles, Bio } from "./Steps";
 
-import { StateContext } from "../../state";
-
-export default function Wizard({ navigation }) {
-  const [state, dispatch] = useContext(StateContext);
-
+export default function Wizard({ navigation, params }) {
+  console.log(params);
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
     firstName: "",
@@ -17,10 +14,6 @@ export default function Wizard({ navigation }) {
 
   const [image, setImage] = useState(null);
   const [isTeacherOrStudent, setIsTeacherOrStudent] = useState(null);
-
-  useEffect(() => {
-    // TODO: check AsyncStorage for form/image, setStep and prefill if exists
-  }, []);
 
   const getSlide = () => {
     switch (step) {
@@ -42,10 +35,6 @@ export default function Wizard({ navigation }) {
             image={image}
             setImage={setImage}
             completeInitialSignup={() => {
-              // TODO: store form, image to AsyncStorage
-              // TODO: call API for registration
-              // - create user account
-              // - add to mailchimp mailing list
               navigation.setOptions({ title: "Pick Your Profile Type" });
               setStep(2);
             }}
@@ -74,7 +63,6 @@ export default function Wizard({ navigation }) {
               switch (isTeacherOrStudent) {
                 case "student":
                   // TODO: add styles to profile via api
-                  await dispatch({ type: "SET_USER" });
                   navigation.navigate("Home");
                 case "teacher":
                   // TODO: add styles to profile via api
@@ -91,7 +79,6 @@ export default function Wizard({ navigation }) {
         return (
           <Bio
             nextStep={async (bio) => {
-              await dispatch({ type: "SET_USER" });
               // TODO: add bio to profile via api
               // TODO: later... setStep(5);
               navigation.navigate("Home");
