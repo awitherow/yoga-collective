@@ -62,6 +62,7 @@ class Main extends Component {
   componentDidMount() {
     this.removeAuthListener = firebase.auth().onAuthStateChanged((authUser) => {
       if (authUser) {
+        this.getData(authUser.uid);
         this.props.setRetrievedUser({
           email: authUser.email,
           uid: authUser.uid,
@@ -72,8 +73,15 @@ class Main extends Component {
     });
   }
 
+  getData = (uid) => {
+    this.removeGetProfile = getProfile(uid).then((profile) =>
+      this.props.setProfile({ profile })
+    );
+  };
+
   componentWillUnmount() {
     this.removeAuthListener();
+    this.removeGetProfile();
   }
 
   render() {
@@ -134,6 +142,8 @@ function mapDispatchToProps(dispatch) {
     setRetrievedUser: (user) =>
       dispatch({ type: types.SET_RETRIEVED_USER, payload: { user } }),
     setNewUser: () => dispatch({ type: types.SET_RETRIEVED_USER }),
+    setProfile: (profile) =>
+      dispatch({ type: types.SET_PROFILE, payload: { profile } }),
   };
 }
 
