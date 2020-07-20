@@ -35,13 +35,9 @@ export default function ProfileInfo({
       base64: true,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setImage(result.uri);
     }
-
-    // https://docs.expo.io/versions/latest/sdk/imagemanipulator/
   };
 
   return (

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { ScrollView, TouchableOpacity } from "react-native";
 import Class from "./Class";
 
-export default function ClassesScreen({ params }) {
+export default function ClassesScreen() {
   const [createClassModalShown, setCreateClassModalShown] = useState(false);
 
   // TODO: get classes/teacher info from graphql
