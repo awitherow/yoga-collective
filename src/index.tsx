@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "react-native-vector-icons";
-import firebase from "firebase";
+import * as firebase from "firebase";
 import { connect } from "react-redux";
 
 import * as types from "./redux/types";
@@ -61,7 +61,7 @@ function AuthorizedTabStack() {
 class Main extends Component {
   componentDidMount() {
     this.removeAuthListener = firebase.auth().onAuthStateChanged((authUser) => {
-      if (authUser) {
+      if (Boolean(authUser)) {
         this.getData(authUser.uid);
         this.props.setRetrievedUser({
           email: authUser.email,
@@ -141,7 +141,7 @@ function mapDispatchToProps(dispatch) {
   return {
     setRetrievedUser: (user) =>
       dispatch({ type: types.SET_RETRIEVED_USER, payload: { user } }),
-    setNewUser: () => dispatch({ type: types.SET_RETRIEVED_USER }),
+    setNewUser: () => dispatch({ type: types.SET_NEW_USER }),
     setProfile: (profile) =>
       dispatch({ type: types.SET_PROFILE, payload: { profile } }),
   };
