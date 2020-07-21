@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { Platform, View, Text } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  getFocusedRouteNameFromRoute,
+} from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "react-native-vector-icons";
@@ -14,6 +17,7 @@ import * as types from "./redux/types";
 
 import Onboarding from "./views/Onboarding";
 import Classes from "./views/Classes";
+import Profile from "./views/Profile";
 import AccessAccountForm from "./views/AccessAccountForm";
 
 import { getProfile } from "./firebase/profile";
@@ -24,10 +28,22 @@ firebase.initializeApp(firebaseConfig);
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const routeTitles = {
+  Classes: "Find Classes",
+  Profile: "Profile",
+};
+
+function getHeaderTitle(route, defaultRouteName = "Find Classes") {
+  let name = getFocusedRouteNameFromRoute(route) || defaultRouteName;
+  if (name === "Home") {
+    name = "Classes";
+  }
+  return routeTitles[name];
+}
+
 function AuthorizedTabStack() {
   return (
     <Tab.Navigator
-      tabBarOptions={{}}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -57,6 +73,11 @@ function AuthorizedTabStack() {
       })}
     >
       <Stack.Screen name="Classes" component={Classes} />
+      <Stack.Screen
+        name="Profile"
+        component={Profile}
+        options={{ title: "Profile" }}
+      />
     </Tab.Navigator>
   );
 }
@@ -117,7 +138,9 @@ class Main extends Component {
                 <Stack.Screen
                   name="Home"
                   component={AuthorizedTabStack}
-                  options={{ title: "Find Classes" }}
+                  options={({ route }) => ({
+                    title: getHeaderTitle(route, "Find Classes"),
+                  })}
                 />
               </>
             ) : (
@@ -144,9 +167,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setRetrievedUser: (user) =>
-      dispatch({ type: types.SET_RETRIEVED_USER, payload: { user } }),
-    setNewUser: () => dispatch({ type: types.SET_NEW_USER }),
     setProfile: (profile) =>
       dispatch({ type: types.SET_PROFILE, payload: { profile } }),
     setLoading: (loading) =>

@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
+import * as ImageManipulator from "expo-image-manipulator";
 import Constants from "expo-constants";
 import { AntDesign } from "@expo/vector-icons";
 import validator from "validator";
-import * as ImageManipulator from "expo-image-manipulator";
 
 export default function ProfileInfo({
   form,
@@ -32,6 +32,7 @@ export default function ProfileInfo({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
+      quality: 0.8,
     });
 
     if (!result.cancelled) {
@@ -39,7 +40,6 @@ export default function ProfileInfo({
         result.uri,
         [{ resize: { width: 500, height: 500 } }],
         {
-          compress: 0.8,
           format: "png",
           base64: true,
         }
@@ -66,22 +66,12 @@ export default function ProfileInfo({
         </View>
         <View>
           <TextInput
-            placeholder="First Name"
-            value={form.firstName}
+            placeholder="Your Name or Nickname"
+            value={form.name}
             onChangeText={(t) =>
               setForm({
                 ...form,
-                firstName: t,
-              })
-            }
-          />
-          <TextInput
-            placeholder="Last Name"
-            value={form.lastName}
-            onChangeText={(t) =>
-              setForm({
-                ...form,
-                lastName: t,
+                name: t,
               })
             }
           />
