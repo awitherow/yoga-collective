@@ -1,0 +1,65 @@
+[debug] [2020-07-21T15:25:51.753Z] ----------------------------------------------------------------------
+[debug] [2020-07-21T15:25:51.766Z] Command:       /Users/austinwitherow/.nvm/versions/node/v14.4.0/bin/node /Users/austinwitherow/.nvm/versions/node/v14.4.0/bin/firebase deploy --only functions
+[debug] [2020-07-21T15:25:51.768Z] CLI Version:   8.4.3
+[debug] [2020-07-21T15:25:51.769Z] Platform:      darwin
+[debug] [2020-07-21T15:25:51.769Z] Node Version:  v14.4.0
+[debug] [2020-07-21T15:25:51.771Z] Time:          Tue Jul 21 2020 11:25:51 GMT-0400 (Eastern Daylight Time)
+[debug] [2020-07-21T15:25:51.771Z] ----------------------------------------------------------------------
+[debug] [2020-07-21T15:25:51.772Z] 
+[debug] [2020-07-21T15:25:51.817Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-07-21T15:25:51.818Z] > authorizing via signed-in user
+[debug] [2020-07-21T15:25:51.819Z] [iam] checking project yoga-collective for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2020-07-21T15:25:51.830Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2020-07-21T15:25:51.834Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2020-07-21T15:25:52.582Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Tue, 21 Jul 2020 15:25:52 GMT","server":"scaffolding on HTTPServer2","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-07-21T15:25:52.647Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/yoga-collective:testIamPermissions  
+ {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2020-07-21T15:25:53.206Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Tue, 21 Jul 2020 15:25:53 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=139","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-07-21T15:25:53.209Z] >>> HTTP REQUEST POST https://iam.googleapis.com/v1/projects/yoga-collective/serviceAccounts/yoga-collective@appspot.gserviceaccount.com:testIamPermissions  
+ {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2020-07-21T15:25:53.763Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Tue, 21 Jul 2020 15:25:53 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[warn] ⚠  functions: package.json indicates an outdated version of firebase-functions.
+Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[info] 
+[info] === Deploying to 'yoga-collective'...
+[info] 
+[info] i  deploying functions 
+[debug] [2020-07-21T15:25:59.362Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "10"
+  },
+  "dependencies": {
+    "firebase-admin": "^8.10.0",
+    "firebase-functions": "^3.6.1"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[debug] [2020-07-21T15:26:01.737Z] [functions] runtime dependency check dates: warning: 2020-05-21T00:00:00.000Z error: 2020-07-09T00:00:00.000Z
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[debug] [2020-07-21T15:26:01.738Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/yoga-collective/services/cloudfunctions.googleapis.com  
+ 
+[debug] [2020-07-21T15:26:01.739Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/yoga-collective/services/runtimeconfig.googleapis.com  
+ 
+[debug] [2020-07-21T15:26:01.741Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/yoga-collective/services/cloudbuild.googleapis.com  
+ 
+[debug] [2020-07-21T15:26:02.614Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Tue, 21 Jul 2020 15:26:02 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-07-21T15:26:03.573Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Tue, 21 Jul 2020 15:26:02 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[warn] ⚠  functions: missing required API cloudbuild.googleapis.com. Enabling now... 
+[debug] [2020-07-21T15:26:03.575Z] >>> HTTP REQUEST POST https://serviceusage.googleapis.com/v1/projects/yoga-collective/services/cloudbuild.googleapis.com:enable  
+ 
+[debug] [2020-07-21T15:26:03.630Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Tue, 21 Jul 2020 15:26:02 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] ✔  functions: required API cloudfunctions.googleapis.com is enabled 

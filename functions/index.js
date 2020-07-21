@@ -37,7 +37,7 @@ exports.updatePhoto = functions.https.onRequest((req, res) => {
             firebase
               .firestore()
               .doc(`users/${uid}`)
-              .update({ photoURL: results[0].mediaLink })
+              .update({ photo: results[0].mediaLink })
               .then(function (success) {
                 res.status(200).send(success);
               })
