@@ -4,7 +4,7 @@ export const createProfile = async (user) => {
   const firestore = firebase.firestore();
   try {
     await firestore.collection("users").doc(user.uid).set({
-      id: user.uid,
+      uid: user.uid,
       email: user.email,
       setupComplete: false,
     });
@@ -30,7 +30,7 @@ export const getProfile = (uid) =>
 
 export const updateProfile = async (uid, data) => {
   const firestore = firebase.firestore();
-  firestore.collection("users").doc(uid).set(data, { merge: true });
+  firestore.collection("users").doc(uid).update(data);
 };
 
 export const uploadProfilePhoto = async (image, uid) =>

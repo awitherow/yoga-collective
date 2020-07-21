@@ -44,7 +44,7 @@ export default function ProfileInfo({
           base64: true,
         }
       );
-      setImage(manip.uri);
+      setImage(`data:image/png;base64,${manip.base64}`);
     }
   };
 

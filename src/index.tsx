@@ -75,9 +75,8 @@ class Main extends Component {
 
   getData = (uid) => {
     const { setProfile, setLoading, isLoading } = this.props;
-
     this.removeGetProfile = getProfile(uid).then((profile) => {
-      if (profile?.id) {
+      if (profile?.uid) {
         setProfile(profile);
       }
 

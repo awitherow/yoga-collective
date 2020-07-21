@@ -35,7 +35,7 @@ function Wizard({ navigation, profile }) {
             image={photo}
             setImage={setPhoto}
             completeInitialSignup={() => {
-              uploadProfilePhoto(photo, id);
+              uploadProfilePhoto(photo, profile.uid);
               navigation.setOptions({ title: "Pick Your Profile Type" });
               setStep(2);
             }}
@@ -64,10 +64,10 @@ function Wizard({ navigation, profile }) {
           <Styles
             profileType={form.profileType}
             nextStep={async (favs) => {
-              const { id } = profile;
+              const { uid } = profile;
               switch (form.profileType) {
                 case "student":
-                  await updateProfile(id, {
+                  await updateProfile(uid, {
                     ...form,
                     styles: favs,
                     setupComplete: true,
@@ -85,11 +85,11 @@ function Wizard({ navigation, profile }) {
         if (form.profileType === "student") {
           navigation.reset({ index: 0, routes: [{ name: "Home" }] });
         }
-        const { id } = profile;
+        const { uid } = profile;
         return (
           <Bio
             nextStep={async (bio) => {
-              await updateProfile(id, {
+              await updateProfile(uid, {
                 ...form,
                 ...bio,
                 setupComplete: true,

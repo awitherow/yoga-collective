@@ -1,9 +1,9 @@
 const functions = require("firebase-functions");
-const admin = require("firebase-admin");
+const firebase = require("firebase-admin");
 const fs = require("fs");
 const os = require("os");
 
-admin.initializeApp();
+firebase.initializeApp();
 
 exports.updatePhoto = functions.https.onRequest((req, res) => {
   console.log("updatePhoto started...");
@@ -49,7 +49,7 @@ exports.updatePhoto = functions.https.onRequest((req, res) => {
             firebase
               .firestore()
               .doc(`users/${uid}`)
-              .set({ photo: results[0].mediaLink })
+              .update({ photo: results[0].mediaLink })
               .then(function (success) {
                 console.log("file stored to profile");
                 res.status(200).send(success);
