@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
-import { ScrollView, TouchableOpacity } from "react-native";
+import { ScrollView, TouchableOpacity, Text } from "react-native";
+import CreateClassModal from "./CreateClassModal";
 import Class from "./Class";
 
 export default function ClassesScreen() {
@@ -42,7 +43,7 @@ export default function ClassesScreen() {
       ))}
       <>
         <TouchableOpacity onPress={() => setCreateClassModalShown(true)}>
-          +
+          <Text>+</Text>
         </TouchableOpacity>
 
         <CreateClassModal

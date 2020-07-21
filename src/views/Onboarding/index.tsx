@@ -4,9 +4,9 @@ import { Entypo, AntDesign } from "@expo/vector-icons";
 import { connect } from "react-redux";
 
 import { Welcome, ProfileType, ProfileInfo, Styles, Bio } from "./Steps";
-import { updateProfile } from "../../firebase/profile";
+import { updateProfile, uploadProfilePhoto } from "../../firebase/profile";
 
-function Wizard({ navigation, user }) {
+function Wizard({ navigation, profile }) {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
     firstName: "",
@@ -14,7 +14,6 @@ function Wizard({ navigation, user }) {
   });
 
   const [photo, setPhoto] = useState(null);
-  const [isTeacherOrStudent, setIsTeacherOrStudent] = useState(null);
 
   const getSlide = () => {
     switch (step) {
@@ -36,6 +35,7 @@ function Wizard({ navigation, user }) {
             image={photo}
             setImage={setPhoto}
             completeInitialSignup={() => {
+              uploadProfilePhoto(photo, id);
               navigation.setOptions({ title: "Pick Your Profile Type" });
               setStep(2);
             }}
@@ -51,7 +51,10 @@ function Wizard({ navigation, user }) {
                     ? "Your Favorite Styles"
                     : "Styles You Teach",
               });
-              setIsTeacherOrStudent(choice);
+              setForm({
+                ...form,
+                profileType: choice,
+              });
               setStep(3);
             }}
           />
@@ -59,13 +62,19 @@ function Wizard({ navigation, user }) {
       case 3:
         return (
           <Styles
-            profileType={isTeacherOrStudent}
-            nextStep={(styles) => {
-              switch (isTeacherOrStudent) {
+            profileType={form.profileType}
+            nextStep={async (favs) => {
+              const { id } = profile;
+              switch (form.profileType) {
                 case "student":
-                  updateProfile(uid, { ...form, styles, photo });
-                  navigation.navigate("Home");
+                  await updateProfile(id, {
+                    ...form,
+                    styles: favs,
+                    setupComplete: true,
+                  });
+                  navigation.reset({ index: 0, routes: [{ name: "Home" }] });
                 case "teacher":
+                  setForm({ ...form, styles: favs });
                   navigation.setOptions({ title: "Complete Your Bio" });
                   setStep(4);
               }
@@ -73,14 +82,19 @@ function Wizard({ navigation, user }) {
           />
         );
       case 4:
-        if (isTeacherOrStudent === "student") {
-          navigation.navigate("Home");
+        if (form.profileType === "student") {
+          navigation.reset({ index: 0, routes: [{ name: "Home" }] });
         }
+        const { id } = profile;
         return (
           <Bio
             nextStep={async (bio) => {
-              updateProfile(uid, { ...form, ...bio, styles, photo });
-              navigation.navigate("Home");
+              await updateProfile(id, {
+                ...form,
+                ...bio,
+                setupComplete: true,
+              });
+              navigation.reset({ index: 0, routes: [{ name: "Home" }] });
               // TODO: later... setStep(5); instead
             }}
           />
@@ -91,7 +105,7 @@ function Wizard({ navigation, user }) {
   };
 
   const stepLengths =
-    isTeacherOrStudent === "teacher" ? [0, 1, 2, 3, 4, 5] : [0, 1, 2, 3];
+    form.profileType === "teacher" ? [0, 1, 2, 3, 4, 5] : [0, 1, 2, 3];
 
   return (
     <View>
@@ -131,7 +145,7 @@ function Wizard({ navigation, user }) {
 
 function mapStateToProps(state) {
   return {
-    user: state.user,
+    profile: state.profile,
   };
 }
 export default connect(mapStateToProps)(Wizard);

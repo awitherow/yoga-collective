@@ -1,8 +1,15 @@
-import React from "react";
-import { Modal, TouchableOpacity, TextInput } from "react-native";
+import React, { useState } from "react";
+import {
+  Modal,
+  TouchableHighlight,
+  TextInput,
+  ScrollView,
+  View,
+  Text,
+} from "react-native";
 import { yogaStyles } from "../../helpers/strings";
 
-export default function CreateClassModal({ modalShown, closeModal }) {
+export default function CreateClassModal({ visible, close }) {
   const [classInfo, setClassInfo] = useState({
     title: "",
     tagline: "",
@@ -15,7 +22,7 @@ export default function CreateClassModal({ modalShown, closeModal }) {
 
   const saveClass = () => {
     // TODO: save classes to database
-    closeModal();
+    close();
   };
 
   return (
@@ -24,15 +31,15 @@ export default function CreateClassModal({ modalShown, closeModal }) {
       presentationStyle="overFullScreen"
       transparent
       animationType="fade"
-      visible={modalVisible}
+      visible={visible}
     >
       <View>
-        <TouchableHighlight onPress={closeModal}>
+        <TouchableHighlight onPress={close}>
           <Text>X</Text>
         </TouchableHighlight>
         <View>
           <Text>Add a Class!</Text>
-          <View>
+          <ScrollView>
             <TextInput
               placeholder="Title"
               value={classInfo.title}
@@ -75,41 +82,43 @@ export default function CreateClassModal({ modalShown, closeModal }) {
             />
             <View>
               <Text>What styles does your class offer?</Text>
-              {yogaStyles.map((classStyle, i) => (
-                <TouchableOpacity
-                  key={i}
-                  onPress={() =>
-                    classInfo.styles.includes(classStyle)
-                      ? setClassInfo({
-                          ...classInfo,
-                          styles: [
-                            ...classInfo.styles.filter(
-                              (style) => style !== classStyle
-                            ),
-                          ],
-                        })
-                      : setClassInfo({
-                          ...classInfo,
-                          styles: [...classInfo.styles, classStyle],
-                        })
-                  }
-                >
-                  <Text
-                    style={{
-                      fontWeight: classInfo.styles.includes(classStyle)
-                        ? "bold"
-                        : "normal",
-                    }}
+              <View>
+                {yogaStyles.map((classStyle, i) => (
+                  <TouchableHighlight
+                    key={i}
+                    onPress={() =>
+                      classInfo.styles.includes(classStyle)
+                        ? setClassInfo({
+                            ...classInfo,
+                            styles: [
+                              ...classInfo.styles.filter(
+                                (style) => style !== classStyle
+                              ),
+                            ],
+                          })
+                        : setClassInfo({
+                            ...classInfo,
+                            styles: [...classInfo.styles, classStyle],
+                          })
+                    }
                   >
-                    {classStyle}
-                  </Text>
-                </TouchableOpacity>
-              ))}
+                    <Text
+                      style={{
+                        fontWeight: classInfo.styles.includes(classStyle)
+                          ? "bold"
+                          : "normal",
+                      }}
+                    >
+                      {classStyle}
+                    </Text>
+                  </TouchableHighlight>
+                ))}
+              </View>
             </View>
-          </View>
-          <TouchableOpacity onPress={saveClass}>
+          </ScrollView>
+          <TouchableHighlight onPress={saveClass}>
             <Text>Save Class to Schedule</Text>
-          </TouchableOpacity>
+          </TouchableHighlight>
         </View>
       </View>
     </Modal>

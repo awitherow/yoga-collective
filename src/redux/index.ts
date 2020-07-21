@@ -2,24 +2,21 @@ import * as types from "./types";
 
 const defaultState = {
   isLoading: true,
-  isSignedIn: false,
-  user: null,
+  profile: null,
 };
 
 function reducer(state = defaultState, action) {
+  console.log("REDUX REDUCER CALLED", action);
   switch (action.type) {
-    case types.SET_RETRIEVED_USER:
+    case types.SET_LOADING:
       return {
         ...state,
-        isLoading: false,
-        isSignedIn: true,
-        user: action.payload.user,
+        isLoading: action.payload,
       };
-    case types.SET_NEW_USER:
+    case types.SET_PROFILE:
       return {
         ...state,
-        isLoading: false,
-        isSignedIn: false,
+        profile: action.payload.profile,
       };
     default:
       return state;

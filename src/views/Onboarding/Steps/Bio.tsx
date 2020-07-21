@@ -12,6 +12,9 @@ export default function Bio({ nextStep }) {
     color: comparison.length === n ? "red" : "gray",
   });
 
+  const HEADLINE_MAX_LENGTH = 52;
+  const BIO_MAX_LENGTH = 280;
+
   return (
     <View>
       <View>
@@ -21,9 +24,11 @@ export default function Bio({ nextStep }) {
         <View>
           <TextInput
             value={profile.tagline}
-            maxLength={52}
+            maxLength={HEADLINE_MAX_LENGTH}
             placeholder="An eye catching headline"
-            style={{ ...tooMuchTextStyle(profile.tagline, 40) }}
+            style={{
+              ...tooMuchTextStyle(profile.tagline, HEADLINE_MAX_LENGTH),
+            }}
             onChangeText={(t) =>
               setProfile({
                 ...profile,
@@ -31,14 +36,16 @@ export default function Bio({ nextStep }) {
               })
             }
           />
-          <Text>{profile.tagline.length}/40</Text>
+          <Text>
+            {profile.tagline.length}/{HEADLINE_MAX_LENGTH}
+          </Text>
         </View>
         <View>
           <TextInput
             value={profile.bio}
             multiline
             numberOfLines={4}
-            maxLength={120}
+            maxLength={BIO_MAX_LENGTH}
             placeholder="Tell us a bit more about yourself"
             onChangeText={(t) =>
               setProfile({
@@ -47,8 +54,8 @@ export default function Bio({ nextStep }) {
               })
             }
           />
-          <Text style={{ ...tooMuchTextStyle(profile.bio, 120) }}>
-            {profile.bio.length}/120
+          <Text style={{ ...tooMuchTextStyle(profile.bio, BIO_MAX_LENGTH) }}>
+            {profile.bio.length}/{BIO_MAX_LENGTH}
           </Text>
         </View>
         <View>

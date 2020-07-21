@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, TextInput, TouchableOpacity, Text } from "react-native";
+import { connect } from "react-redux";
+
+import * as types from "../redux/types";
 
 import { signUp, signIn } from "../firebase/auth";
 
@@ -8,11 +11,10 @@ const defaultState = {
   password: "",
 };
 
-export default function AccessAccountForm({ route, navigation }) {
+function AccessAccountForm({ route, navigation, setLoading }) {
   const [data, setData] = useState(defaultState);
-  const [submitting, setIsSubmitting] = useState(false);
   const [formType, setFormType] = useState(
-    JSON.stringify(route?.params?.type) || "signin"
+    JSON.stringify(route?.params?.type) || "signup"
   );
 
   useEffect(() => {
@@ -21,14 +23,14 @@ export default function AccessAccountForm({ route, navigation }) {
     });
   }, [formType]);
 
-  const handleSignIn = () => {
-    setIsSubmitting(true);
-    signIn(data);
+  const handleSignIn = async () => {
+    setLoading(true);
+    await signIn(data);
   };
 
-  const handleSignUp = () => {
-    setIsSubmitting(true);
-    signUp(data);
+  const handleSignUp = async () => {
+    setLoading(true);
+    await signUp(data);
   };
 
   return (
@@ -58,11 +60,11 @@ export default function AccessAccountForm({ route, navigation }) {
       />
       <View>
         {formType === "signin" ? (
-          <TouchableOpacity disabled={submitting} onPress={handleSignIn}>
+          <TouchableOpacity onPress={handleSignIn}>
             <Text>Login</Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity disabled={submitting} onPress={handleSignUp}>
+          <TouchableOpacity onPress={handleSignUp}>
             <Text>Create Your Account</Text>
           </TouchableOpacity>
         )}
@@ -81,3 +83,12 @@ export default function AccessAccountForm({ route, navigation }) {
     </View>
   );
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setLoading: (loading) =>
+      dispatch({ type: types.SET_LOADING, payload: loading }),
+  };
+}
+
+export default connect(null, mapDispatchToProps)(AccessAccountForm);

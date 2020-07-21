@@ -4,8 +4,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "react-native-vector-icons";
-import * as firebase from "firebase";
 import { connect } from "react-redux";
+
+import * as firebase from "firebase";
+import "firebase/firestore";
+import "firebase/auth";
 
 import * as types from "./redux/types";
 
@@ -60,23 +63,28 @@ function AuthorizedTabStack() {
 
 class Main extends Component {
   componentDidMount() {
+    const { setLoading, isLoading } = this.props;
     this.removeAuthListener = firebase.auth().onAuthStateChanged((authUser) => {
       if (Boolean(authUser)) {
         this.getData(authUser.uid);
-        this.props.setRetrievedUser({
-          email: authUser.email,
-          uid: authUser.uid,
-        });
       } else {
-        this.props.setNewUser();
+        setLoading(false);
       }
     });
   }
 
   getData = (uid) => {
-    this.removeGetProfile = getProfile(uid).then((profile) =>
-      this.props.setProfile({ profile })
-    );
+    const { setProfile, setLoading, isLoading } = this.props;
+
+    this.removeGetProfile = getProfile(uid).then((profile) => {
+      if (profile?.id) {
+        setProfile(profile);
+      }
+
+      if (isLoading) {
+        setLoading(false);
+      }
+    });
   };
 
   componentWillUnmount() {
@@ -85,7 +93,8 @@ class Main extends Component {
   }
 
   render() {
-    const { isLoading, isSignedIn, setupComplete } = this.props;
+    const { isLoading, profile } = this.props;
+    const defaultRoute = profile?.setupComplete ? "Home" : "Onboarding";
 
     if (isLoading) {
       return (
@@ -96,10 +105,8 @@ class Main extends Component {
     } else {
       return (
         <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName={setupComplete ? "Home" : "Onboarding"}
-          >
-            {isSignedIn ? (
+          <Stack.Navigator initialRouteName={defaultRoute}>
+            {profile ? (
               <>
                 <Stack.Screen
                   name="Onboarding"
@@ -132,8 +139,7 @@ class Main extends Component {
 function mapStateToProps(state) {
   return {
     isLoading: state.isLoading,
-    isSignedIn: state.isSignedIn,
-    setupComplete: state.user?.setupComplete || false,
+    profile: state.profile,
   };
 }
 
@@ -144,6 +150,8 @@ function mapDispatchToProps(dispatch) {
     setNewUser: () => dispatch({ type: types.SET_NEW_USER }),
     setProfile: (profile) =>
       dispatch({ type: types.SET_PROFILE, payload: { profile } }),
+    setLoading: (loading) =>
+      dispatch({ type: types.SET_LOADING, payload: loading }),
   };
 }
 

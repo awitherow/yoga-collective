@@ -5,12 +5,13 @@ import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import { AntDesign } from "@expo/vector-icons";
 import validator from "validator";
+import * as ImageManipulator from "expo-image-manipulator";
 
 export default function ProfileInfo({
   form,
   setForm,
-  image,
   setImage,
+  image,
   completeInitialSignup,
 }) {
   useEffect(() => {
@@ -31,12 +32,19 @@ export default function ProfileInfo({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 0.8,
-      base64: true,
     });
 
     if (!result.cancelled) {
-      setImage(result.uri);
+      const manip = await ImageManipulator.manipulateAsync(
+        result.uri,
+        [{ resize: { width: 500, height: 500 } }],
+        {
+          compress: 0.8,
+          format: "png",
+          base64: true,
+        }
+      );
+      setImage(manip.uri);
     }
   };
 
