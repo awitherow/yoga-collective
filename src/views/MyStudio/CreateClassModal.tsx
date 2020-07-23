@@ -13,12 +13,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { yogaStyles } from "../../helpers/strings";
 import { createClass } from "../../firebase/classes";
 
-export default function CreateClassModal({
-  visible,
-  close,
-  teacherId,
-  teacherName,
-}) {
+export default function CreateClassModal({ visible, close, profile }) {
   const today = new Date();
   const todayPlusOneHour = new Date();
   todayPlusOneHour.setHours(todayPlusOneHour.getHours() + 1);
@@ -50,7 +45,7 @@ export default function CreateClassModal({
   );
 
   const saveClass = () => {
-    createClass(teacherId, teacherName, classInfo);
+    createClass(profile, classInfo);
     setClassInfo(defaultClassInfo);
     close();
   };

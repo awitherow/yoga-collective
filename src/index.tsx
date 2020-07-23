@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Platform, View, Text } from "react-native";
+import { Platform, View, Text, SafeAreaView } from "react-native";
 import {
   NavigationContainer,
   getFocusedRouteNameFromRoute,
@@ -16,7 +16,7 @@ import "firebase/auth";
 import * as types from "./redux/types";
 
 import Onboarding from "./views/Onboarding";
-import Classes from "./views/Classes";
+import Schedule from "./views/Schedule";
 import Profile from "./views/Profile";
 import AccessAccountForm from "./views/AccessAccountForm";
 
@@ -29,19 +29,21 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const routeTitles = {
-  Classes: "Find Classes",
+  Schedule: "Schedule",
   Profile: "Profile",
 };
 
-function getHeaderTitle(route, defaultRouteName = "Find Classes") {
+function getHeaderTitle(route, defaultRouteName = "Schedule") {
   let name = getFocusedRouteNameFromRoute(route) || defaultRouteName;
   if (name === "Home") {
-    name = "Classes";
+    name = "Schedule";
   }
   return routeTitles[name];
 }
 
-function AuthorizedTabStack() {
+function AuthorizedTabStack({ profile }) {
+  const isTeacher = profile.profileType === "teacher";
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -51,14 +53,19 @@ function AuthorizedTabStack() {
           let Android;
 
           switch (route.name) {
-            case "Classes":
-              iOS = "ios-school";
-              Android = "md-school";
+            case "Schedule":
+              iOS = "ios-calendar";
+              Android = "md-calendar";
               iconName = Platform.OS === "ios" ? iOS : Android;
               break;
             case "About":
               iOS = "ios-information-circle-outline";
               Android = "md-information-circle-outline";
+              iconName = Platform.OS === "ios" ? iOS : Android;
+              break;
+            case "My Studio":
+              iOS = "ios-home";
+              Android = "md-home";
               iconName = Platform.OS === "ios" ? iOS : Android;
               break;
             case "Profile":
@@ -72,7 +79,7 @@ function AuthorizedTabStack() {
         },
       })}
     >
-      <Stack.Screen name="Classes" component={Classes} />
+      <Stack.Screen name="Schedule" component={Schedule} />
       <Stack.Screen
         name="Profile"
         component={Profile}
@@ -137,7 +144,11 @@ class Main extends Component {
                 />
                 <Stack.Screen
                   name="Home"
-                  component={AuthorizedTabStack}
+                  component={connect(function mapStateToProps(state) {
+                    return {
+                      profile: state.profile,
+                    };
+                  })(AuthorizedTabStack)}
                   options={({ route }) => ({
                     title: getHeaderTitle(route, "Find Classes"),
                   })}

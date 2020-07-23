@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView, Text, View, Image, TouchableOpacity } from "react-native";
 
-export default function Class({ teacher, yogaClass }) {
+export default function Class({ yogaClass }) {
   return (
     <View>
       <View>
