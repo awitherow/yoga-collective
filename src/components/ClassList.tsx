@@ -9,24 +9,28 @@ import { getClasses } from "../firebase/classes";
 import * as types from "../redux/types";
 
 function ClassList({ teacherId = null, classes, setClasses }) {
-  const loadClassesFromFirebase = () =>
-    getClasses({
-      teacherId,
-    }).then((classes) => {
-      console.log("classes acquired");
-      setClasses(classes);
-    });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const loadClassesFromFirebase = () =>
+      getClasses({
+        teacherId,
+      }).then((classes) => {
+        setClasses(classes);
+        setLoading(false);
+      });
+
     loadClassesFromFirebase();
   }, []);
 
   return (
     <ScrollView>
-      {classes.length ? (
+      {loading ? (
+        <Text>Loading Classes...</Text>
+      ) : classes.length ? (
         classes.map((yogaClass) => <Class yogaClass={yogaClass} />)
       ) : (
-        <Text>Loading Classes...</Text>
+        <Text>No classes meet your search criteria</Text>
       )}
     </ScrollView>
   );

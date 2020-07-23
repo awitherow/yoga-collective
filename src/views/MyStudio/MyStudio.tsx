@@ -9,6 +9,12 @@ function MyStudio({ profile, classes, setClasses }) {
   const [createClassModalShown, setCreateClassModalShown] = useState(false);
   return (
     <ScrollView>
+      <View>
+        <Text>My Classes</Text>
+        <TouchableOpacity onPress={() => setCreateClassModalShown(true)}>
+          <Text>+</Text>
+        </TouchableOpacity>
+      </View>
       <ClassList teacherId={profile.uid} />
 
       <CreateClassModal
@@ -17,11 +23,7 @@ function MyStudio({ profile, classes, setClasses }) {
         profile={profile}
       />
 
-      <>
-        <TouchableOpacity onPress={() => setCreateClassModalShown(true)}>
-          <Text>+</Text>
-        </TouchableOpacity>
-      </>
+      <Text>My Students</Text>
     </ScrollView>
   );
 }
