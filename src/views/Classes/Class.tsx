@@ -5,12 +5,9 @@ export default function Class({ teacher, yogaClass }) {
   return (
     <View>
       <View>
-        <Image source={{ uri: teacher.photo }} />
-      </View>
-      <View>
         <View>
           <Text>
-            {yogaClass.title} with {teacher.firstName}
+            {yogaClass.title} with {yogaClass.teacherName}
           </Text>
         </View>
         <Text>{yogaClass.tagline}</Text>

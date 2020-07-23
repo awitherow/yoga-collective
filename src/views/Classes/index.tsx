@@ -1,46 +1,37 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { ScrollView, TouchableOpacity, Text } from "react-native";
+import { connect } from "react-redux";
+
 import CreateClassModal from "./CreateClassModal";
 import Class from "./Class";
 
-export default function ClassesScreen() {
+import { getClasses } from "../../firebase/classes";
+import * as types from "../../redux/types";
+
+function ClassesScreen({ classes, teacherId, teacherName, setClasses }) {
   const [createClassModalShown, setCreateClassModalShown] = useState(false);
 
-  // TODO: get classes/teacher info from graphql
-  const teachers = [
-    {
-      id: "001",
-      photo: "placeholder.com/150",
-      firstName: "Austin",
-      lastName: "Witherow",
-    },
-  ];
+  const loadClassesFromFirebase = () =>
+    getClasses().then((classes) => {
+      console.log(classes);
+      setClasses(classes);
+    });
 
-  const classes = [
-    {
-      id: "001",
-      teacherId: "001",
-      title: "Beginner Hatha Yoga Flow",
-      tagline:
-        "Hatha Yoga with Vinyasa, Breathwork and Meditation, for all levels!",
-      description:
-        "This simple beginner hatha yoga flow is for anyone who is new to yoga, or even advanced students who want to solidify the fundamentals. This class focuses on classical hatha yoga postures, vinyasa flow elements, breathwork and meditation.",
-      tags: ["hatha", "vinyasa", "breathwork", "meditation", "beginner"],
-      location: "https://www.zoomexamplelink.com/HE034hpld094",
-      time: new Date(),
-    },
-  ];
+  useEffect(() => {
+    if (!classes.length) {
+      loadClassesFromFirebase();
+    }
+  }, []);
+
+  console.log(classes);
 
   return (
     <ScrollView>
-      {classes.map((yogaClass) => (
-        <Class
-          yogaClass={yogaClass}
-          teacher={teachers.filter(
-            (teacher) => yogaClass.teacherId === teacher.id
-          )}
-        />
-      ))}
+      {classes.length ? (
+        classes.map((yogaClass) => <Class yogaClass={yogaClass} />)
+      ) : (
+        <Text>Loading Classes...</Text>
+      )}
       <>
         <TouchableOpacity onPress={() => setCreateClassModalShown(true)}>
           <Text>+</Text>
@@ -49,8 +40,27 @@ export default function ClassesScreen() {
         <CreateClassModal
           visible={createClassModalShown}
           close={() => setCreateClassModalShown(false)}
+          teacherId={teacherId}
+          teacherName={teacherName}
         />
       </>
     </ScrollView>
   );
 }
+
+function mapStateToProps(state) {
+  return {
+    teacherId: state.profile.uid,
+    teacherName: state.profile.name,
+    classes: state.classes,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setClasses: (classes) =>
+      dispatch({ type: types.SET_CLASSES, payload: classes }),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ClassesScreen);

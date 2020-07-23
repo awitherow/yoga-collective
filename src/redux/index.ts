@@ -3,10 +3,10 @@ import * as types from "./types";
 const defaultState = {
   isLoading: true,
   profile: null,
+  classes: [],
 };
 
 function reducer(state = defaultState, action) {
-  console.log("REDUX REDUCER CALLED", action);
   switch (action.type) {
     case types.SET_LOADING:
       return {
@@ -17,6 +17,11 @@ function reducer(state = defaultState, action) {
       return {
         ...state,
         profile: action.payload.profile,
+      };
+    case types.SET_CLASSES:
+      return {
+        ...state,
+        classes: action.payload,
       };
     default:
       return state;

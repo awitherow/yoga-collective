@@ -20,8 +20,8 @@ import Classes from "./views/Classes";
 import Profile from "./views/Profile";
 import AccessAccountForm from "./views/AccessAccountForm";
 
-import { getProfile } from "./firebase/profile";
 import firebaseConfig from "./firebase/config";
+import { getProfile } from "./firebase/profile";
 
 firebase.initializeApp(firebaseConfig);
 
