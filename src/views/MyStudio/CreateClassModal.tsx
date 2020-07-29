@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   SafeAreaView,
+  Switch,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { yogaStyles } from "../../helpers/strings";
@@ -22,13 +23,17 @@ export default function CreateClassModal({ visible, close, profile }) {
     title: "",
     tagline: "",
     description: "",
-    location: "",
+    address: "",
+    link: "",
     startTime: today,
     endTime: todayPlusOneHour,
     styles: [],
   };
 
   const [classInfo, setClassInfo] = useState(defaultClassInfo);
+
+  const [hasPhysicalLocation, setHasPhysicalLocation] = useState(false);
+  const [isOnline, setIsOnline] = useState(true);
 
   const defaultDateTimeOptions = {
     mode: "date",
@@ -194,16 +199,48 @@ export default function CreateClassModal({ visible, close, profile }) {
                   </TouchableOpacity>
                 </View>
               )}
-              <TextInput
-                placeholder="Location (web link or address)"
-                value={classInfo.location}
-                onChangeText={(t) =>
-                  setClassInfo({
-                    ...classInfo,
-                    location: t,
-                  })
-                }
-              />
+              <View>
+                <View>
+                  <Text>Is class online?</Text>
+                  <Switch
+                    onValueChange={(val) => setIsOnline(val)}
+                    value={isOnline}
+                  />
+                </View>
+                {isOnline && (
+                  <TextInput
+                    placeholder="Link to class (Zoom, etc)"
+                    value={classInfo.link}
+                    onChangeText={(t) =>
+                      setClassInfo({
+                        ...classInfo,
+                        link: t,
+                      })
+                    }
+                  />
+                )}
+              </View>
+              <View>
+                <View>
+                  <Text>Can attend physically?</Text>
+                  <Switch
+                    onValueChange={(val) => setHasPhysicalLocation(val)}
+                    value={hasPhysicalLocation}
+                  />
+                </View>
+                {hasPhysicalLocation && (
+                  <TextInput
+                    placeholder="Physical Address"
+                    value={classInfo.address}
+                    onChangeText={(t) =>
+                      setClassInfo({
+                        ...classInfo,
+                        address: t,
+                      })
+                    }
+                  />
+                )}
+              </View>
               <View>
                 <Text>What styles does your class offer?</Text>
                 <View>
