@@ -6,23 +6,23 @@ import {
 } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "react-native-vector-icons";
+import { Ionicons, Feather } from "react-native-vector-icons";
 import { connect } from "react-redux";
 
 import * as firebase from "firebase";
 import "firebase/firestore";
 import "firebase/auth";
+import firebaseConfig from "./firebase/config";
+import { getProfile } from "./firebase/profile";
 
 import * as types from "./redux/types";
 
 import Onboarding from "./views/Onboarding";
 import Schedule from "./views/Schedule";
 import Profile from "./views/Profile";
-import AccessAccountForm from "./views/AccessAccountForm";
-
-import firebaseConfig from "./firebase/config";
-import { getProfile } from "./firebase/profile";
 import MyStudio from "./views/MyStudio";
+import About from "./views/About";
+import AccessAccountForm from "./views/AccessAccountForm";
 
 firebase.initializeApp(firebaseConfig);
 
@@ -33,6 +33,7 @@ const routeTitles = {
   Schedule: "Schedule",
   Profile: "Profile",
   "My Studio": "My Studio",
+  About: "The Collective",
 };
 
 function getHeaderTitle(route, defaultRouteName = "Schedule") {
@@ -61,10 +62,7 @@ function AuthorizedTabStack({ profile }) {
               iconName = Platform.OS === "ios" ? iOS : Android;
               break;
             case "About":
-              iOS = "ios-information-circle-outline";
-              Android = "md-information-circle-outline";
-              iconName = Platform.OS === "ios" ? iOS : Android;
-              break;
+              return <Feather name="circle" size={size} color={color} />;
             case "My Studio":
               iOS = "ios-home";
               Android = "md-home";
@@ -88,6 +86,11 @@ function AuthorizedTabStack({ profile }) {
         options={{ title: "My Profile" }}
       />
       {isTeacher && <Stack.Screen name="My Studio" component={MyStudio} />}
+      <Stack.Screen
+        name="About"
+        component={About}
+        options={{ title: "The Collective" }}
+      />
     </Tab.Navigator>
   );
 }
