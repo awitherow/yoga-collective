@@ -22,6 +22,7 @@ import AccessAccountForm from "./views/AccessAccountForm";
 
 import firebaseConfig from "./firebase/config";
 import { getProfile } from "./firebase/profile";
+import MyStudio from "./views/MyStudio";
 
 firebase.initializeApp(firebaseConfig);
 
@@ -31,6 +32,7 @@ const Tab = createBottomTabNavigator();
 const routeTitles = {
   Schedule: "Schedule",
   Profile: "Profile",
+  "My Studio": "My Studio",
 };
 
 function getHeaderTitle(route, defaultRouteName = "Schedule") {
@@ -83,8 +85,9 @@ function AuthorizedTabStack({ profile }) {
       <Stack.Screen
         name="Profile"
         component={Profile}
-        options={{ title: "Profile" }}
+        options={{ title: "My Profile" }}
       />
+      {isTeacher && <Stack.Screen name="My Studio" component={MyStudio} />}
     </Tab.Navigator>
   );
 }

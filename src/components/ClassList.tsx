@@ -8,7 +8,7 @@ import Class from "./Class";
 import { getClasses } from "../firebase/classes";
 import * as types from "../redux/types";
 
-function ClassList({ teacherId = null, classes, setClasses }) {
+function ClassList({ teacherId = null, classes, setClasses, profile }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ function ClassList({ teacherId = null, classes, setClasses }) {
       {loading ? (
         <Text>Loading Classes...</Text>
       ) : classes.length ? (
-        classes.map((yogaClass) => <Class yogaClass={yogaClass} />)
+        classes.map((yogaClass, i) => <Class key={i} yogaClass={yogaClass} />)
       ) : (
         <Text>No classes meet your search criteria</Text>
       )}
@@ -39,6 +39,7 @@ function ClassList({ teacherId = null, classes, setClasses }) {
 function mapStateToProps(state) {
   return {
     classes: state.classes,
+    profile: state.profile,
   };
 }
 

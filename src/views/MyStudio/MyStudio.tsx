@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Text, TouchableOpacity } from "react-native";
-import CreateClassModal from "./CreateClassModal";
-import ClassList from "../../components/ClassList";
+import { Text, TouchableOpacity, ScrollView, View } from "react-native";
+import { connect } from "react-redux";
 
 import { getClasses } from "../../firebase/classes";
+
+import CreateClassModal from "./CreateClassModal";
+import ClassList from "../../components/ClassList";
 
 function MyStudio({ profile, classes, setClasses }) {
   const [createClassModalShown, setCreateClassModalShown] = useState(false);
