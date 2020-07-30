@@ -52,6 +52,7 @@ export const getClasses = ({ teacherId = null, timeframe = new Date() }) =>
       }
     } else {
       try {
+        // TODO: timeframe not working
         const res = await classesRef.where("endTime", ">=", timeframe).get();
         res.forEach((doc) => classes.push(doc.data()));
         resolve(classes);

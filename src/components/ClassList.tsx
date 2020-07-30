@@ -1,5 +1,11 @@
-import React, { useContext, useState, useEffect } from "react";
-import { ScrollView, TouchableOpacity, Text } from "react-native";
+import React, { useCallback, useState, useEffect } from "react";
+import {
+  View,
+  FlatList,
+  TouchableOpacity,
+  Text,
+  RefreshControl,
+} from "react-native";
 import { connect } from "react-redux";
 
 import CreateClassModal from "../MyStudio/CreateClassModal";
@@ -7,9 +13,19 @@ import Class from "./Class";
 
 import { getClasses } from "../firebase/classes";
 import * as types from "../redux/types";
+import { defaultFormatDate } from "../helpers/time";
 
 function ClassList({ teacherId = null, classes, setClasses, profile }) {
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getClasses({ teacherId }).then((classes) => {
+      setClasses(classes);
+      setRefreshing(false);
+    });
+  }, []);
 
   useEffect(() => {
     const loadClassesFromFirebase = () =>
@@ -24,15 +40,24 @@ function ClassList({ teacherId = null, classes, setClasses, profile }) {
   }, []);
 
   return (
-    <ScrollView>
+    <View>
       {loading ? (
         <Text>Loading Classes...</Text>
       ) : classes.length ? (
-        classes.map((yogaClass, i) => <Class key={i} yogaClass={yogaClass} />)
+        <FlatList
+          data={classes}
+          keyExtractor={(item) =>
+            `${item.title}-${item.teacherId}-${item.startTime}`
+          }
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          renderItem={({ item, index }) => <Class yogaClass={item} />}
+        />
       ) : (
         <Text>No classes meet your search criteria</Text>
       )}
-    </ScrollView>
+    </View>
   );
 }
 
