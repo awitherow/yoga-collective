@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, TextInput, TouchableOpacity, Text } from "react-native";
 import { connect } from "react-redux";
+import * as validator from "validator";
 
 import * as types from "../redux/types";
 
@@ -17,21 +18,46 @@ function AccessAccountForm({ route, navigation, setLoading }) {
     JSON.stringify(route?.params?.type) || "signup"
   );
 
+  const [formError, setFormError] = useState(null);
+  const [attemptingAuth, setAttemptingAuth] = useState(false);
+
   useEffect(() => {
     navigation.setOptions({
       title: formType === "signin" ? "Sign In" : "Sign Up",
     });
   }, [formType]);
 
-  const handleSignIn = async () => {
-    setLoading(true);
-    await signIn(data);
+  const handleSignIn = () => {
+    setAttemptingAuth(true);
+    signIn(data)
+      .then(() => setLoading(true))
+      .catch((e) => {
+        setFormError(e.message);
+        setAttemptingAuth(false);
+      });
   };
 
-  const handleSignUp = async () => {
-    setLoading(true);
-    await signUp(data);
+  const handleSignUp = () => {
+    setAttemptingAuth(true);
+    signUp(data).catch((e) => {
+      setFormError(e.message);
+      setAttemptingAuth(false);
+    });
   };
+
+  const passwordSecure = (password) =>
+    new RegExp(
+      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+    ).test(password);
+
+  const validateForm = () =>
+    formType === "signup"
+      ? validator.isEmail(data.email) && passwordSecure(data.password)
+      : validator.isEmail(data.email);
+
+  const disabled = attemptingAuth || !validateForm();
+  const passwordString =
+    "Password must contain 1 number, 1 uppercase, 1 lowercase, 1 special character, and be 8 characters long or more";
 
   return (
     <View>
@@ -58,13 +84,17 @@ function AccessAccountForm({ route, navigation, setLoading }) {
           })
         }
       />
+      {formError && <Text>{formError}</Text>}
+      {formType === "signup" && !passwordSecure(data.password) ? (
+        <Text>{passwordString}</Text>
+      ) : null}
       <View>
         {formType === "signin" ? (
-          <TouchableOpacity onPress={handleSignIn}>
+          <TouchableOpacity disabled={disabled} onPress={handleSignIn}>
             <Text>Login</Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onPress={handleSignUp}>
+          <TouchableOpacity disabled={disabled} onPress={handleSignUp}>
             <Text>Create Your Account</Text>
           </TouchableOpacity>
         )}

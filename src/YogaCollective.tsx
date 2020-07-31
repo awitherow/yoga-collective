@@ -106,11 +106,9 @@ class Main extends Component {
         resetApp,
       } = this.props;
 
-      console.log(authUser, profile);
       if (Boolean(authUser)) {
         this.getData(authUser.uid);
       } else if (!Boolean(authUser) && profile) {
-        this.removeEventListeners();
         resetApp();
         setTimeout(() => setLoading(false), 1000);
       } else {
@@ -135,12 +133,16 @@ class Main extends Component {
     });
   };
 
-  componentWillUnmount() {
-    this.removeEventListeners();
-  }
-
-  removeEventListeners() {
-    this.removeAuthListener();
+  componentDidUpdate(prevProps) {
+    // handle signIn loading switch
+    if (
+      prevProps.isLoading &&
+      !prevProps.profile &&
+      this.props.isLoading &&
+      this.props.profile.setupComplete
+    ) {
+      this.props.setLoading(false);
+    }
   }
 
   render() {
