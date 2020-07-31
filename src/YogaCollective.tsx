@@ -97,19 +97,34 @@ function AuthorizedTabStack({ profile }) {
 
 class Main extends Component {
   componentDidMount() {
-    const { setLoading, isLoading } = this.props;
     this.removeAuthListener = firebase.auth().onAuthStateChanged((authUser) => {
+      const {
+        setProfile,
+        setLoading,
+        isLoading,
+        profile,
+        resetApp,
+      } = this.props;
+
+      console.log(authUser, profile);
       if (Boolean(authUser)) {
         this.getData(authUser.uid);
+      } else if (!Boolean(authUser) && profile) {
+        this.removeEventListeners();
+        resetApp();
+        setTimeout(() => setLoading(false), 1000);
       } else {
-        setLoading(false);
+        if (isLoading) {
+          setLoading(false);
+        }
       }
     });
   }
 
   getData = (uid) => {
     const { setProfile, setLoading, isLoading } = this.props;
-    this.removeGetProfile = getProfile(uid).then((profile) => {
+
+    getProfile(uid).then((profile) => {
       if (profile?.uid) {
         setProfile(profile);
       }
@@ -121,8 +136,11 @@ class Main extends Component {
   };
 
   componentWillUnmount() {
+    this.removeEventListeners();
+  }
+
+  removeEventListeners() {
     this.removeAuthListener();
-    this.removeGetProfile();
   }
 
   render() {
@@ -188,6 +206,7 @@ function mapDispatchToProps(dispatch) {
       dispatch({ type: types.SET_PROFILE, payload: { profile } }),
     setLoading: (loading) =>
       dispatch({ type: types.SET_LOADING, payload: loading }),
+    resetApp: () => dispatch({ type: types.RESET_APP }),
   };
 }
 

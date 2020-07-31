@@ -66,3 +66,12 @@ export const signIn = async ({ email, password }) =>
       reject(error);
     }
   });
+
+export const signOut = () =>
+  new Promise((resolve, reject) => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => resolve(true))
+      .catch((error) => reject(error));
+  });

@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { ScrollView, View, TextInput, Image, Text } from "react-native";
+import {
+  ScrollView,
+  View,
+  TextInput,
+  Image,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as ImageManipulator from "expo-image-manipulator";
 import Constants from "expo-constants";
-import {
-  TouchableHighlight,
-  TouchableOpacity,
-} from "react-native-gesture-handler";
+
+import * as types from "../../redux/types";
+
 import { updateProfile, uploadProfilePhoto } from "../../firebase/profile";
+import { signOut } from "../../firebase/auth";
 
 import { yogaStyles } from "../../helpers/strings";
 
@@ -155,6 +163,9 @@ function ProfileScreen({ navigation, profile }) {
         }}
       >
         <Text>Update Profile</Text>
+      </TouchableHighlight>
+      <TouchableHighlight onPress={() => signOut()}>
+        <Text>Signout</Text>
       </TouchableHighlight>
     </ScrollView>
   );

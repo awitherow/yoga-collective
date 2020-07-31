@@ -8,6 +8,8 @@ const defaultState = {
 
 function reducer(state = defaultState, action) {
   switch (action.type) {
+    case types.RESET_APP:
+      return defaultState;
     case types.SET_LOADING:
       return {
         ...state,
